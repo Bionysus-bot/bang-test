@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>⭐ 邦邦性格测试 · 寻找你的KiraKira分身</title>
+    <!-- Poppins & 圆体风格 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #fff2f5 0%, #fae9ff 100%);
+            font-family: 'Inter', 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+            padding: 1.2rem 1rem 2rem;
+            color: #3b2a47;
+            min-height: 100vh;
+        }
+
+        /* 顶部吉他拨片装饰 */
+        .pick-deco {
+            text-align: center;
+            margin-bottom: -1.2rem;
+            position: relative;
+            z-index: 2;
+        }
+        .pick-deco i {
+            font-size: 3rem;
+            filter: drop-shadow(0 8px 12px rgba(199, 166, 255, 0.4));
+            background: linear-gradient(135deg, #FFB7C5, #C7A6FF);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 6px rgba(255,183,197,0.3);
+            transform: rotate(-8deg);
+            display: inline-block;
+            transition: transform 0.2s ease;
+        }
+        .pick-deco i:hover { transform: rotate(0deg) scale(1.05);}
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* 主标题 */
+        .hero {
+            text-align: center;
+            margin: 0.5rem 0 1rem 0;
+        }
+        .hero h1 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            background: linear-gradient(125deg, #e86f8f, #b27be0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .hero h1 i {
+            background: none;
+            color: #e88d9a;
+            font-size: 1.8rem;
+        }
+        .sub {
+            margin-top: 0.3rem;
+            font-size: 0.85rem;
+            background: rgba(255,240,245,0.7);
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            color: #a273c7;
+            font-weight: 500;
+            backdrop-filter: blur(2px);
+        }
+
+        /* 卡片式问卷 */
+        .quiz-wrapper {
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 2.2rem;
+            box-shadow: 0 25px 40px -18px rgba(0,0,0,0.25);
+            padding: 1.8rem 1.5rem;
+            margin: 1.5rem 0;
+            transition: all 0.2s;
+            border: 1px solid #ffe2f0;
+        }
+
+        .question-card {
+            background: #fffbfe;
+            border-radius: 1.5rem;
+            padding: 1.2rem 1.2rem;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 2px 8px rgba(199, 166, 255, 0.15);
+            transition: all 0.2s;
+            border-left: 6px solid #FFB7C5;
+        }
+        .q-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: #5e3b7c;
+        }
+        .q-num {
+            background: #C7A6FF;
+            color: white;
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .opt-label {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: #fef7ff;
+            padding: 0.65rem 1rem;
+            border-radius: 1.6rem;
+            border: 1px solid #f3e2ff;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .opt-label:hover {
+            background: #faf0ff;
+            border-color: #d7b6ff;
+            transform: translateX(4px);
+        }
+        input[type="radio"] {
+            accent-color: #FFB7C5;
+            width: 1.1rem;
+            height: 1.1rem;
+            flex-shrink: 0;
+        }
+        .opt-text {
+            font-size: 0.88rem;
+            font-weight: 500;
+            line-height: 1.3;
+            color: #3a2c48;
+        }
+
+        /* 提交按钮 */
+        .btn-submit {
+            background: linear-gradient(105deg, #FFB7C5, #C7A6FF);
+            border: none;
+            width: 100%;
+            padding: 0.9rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            border-radius: 3rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.6rem;
+            box-shadow: 0 6px 14px rgba(199, 166, 255, 0.4);
+            transition: 0.2s;
+        }
+        .btn-submit:active { transform: scale(0.97);}
+
+        /* 结果区域 */
+        .result-container {
+            background: white;
+            border-radius: 2rem;
+            padding: 1.5rem;
+            margin-top: 1.8rem;
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.2);
+            border-top: 8px solid #FFB7C5;
+        }
+        .char-name {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(125deg, #d56f92, #b172f0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-align: center;
+        }
+        .band-name {
+            text-align: center;
+            font-weight: 600;
+            color: #b27be0;
+            letter-spacing: 1px;
+            margin-bottom: 0.6rem;
+        }
+        /* 星形进度条 */
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 0.6rem 0;
+        }
+        .star-filled {
+            color: #FFB7C5;
+            text-shadow: 0 0 2px #ff99bb;
+            font-size: 1.6rem;
+        }
+        .star-empty {
+            color: #e2d0f5;
+            font-size: 1.6rem;
+        }
+        .personality-desc {
+            background: #fef4fa;
+            padding: 1rem 1.2rem;
+            border-radius: 1.4rem;
+            margin: 1rem 0;
+            line-height: 1.5;
+            font-size: 0.92rem;
+            color: #3d2c53;
+        }
+        .mbti-badge {
+            display: inline-block;
+            background: #C7A6FF30;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+        .reset-btn {
+            background: none;
+            border: 1.5px solid #dbb6ff;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            margin-top: 0.5rem;
+            font-weight: 600;
+            color: #b47cd8;
+            cursor: pointer;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .footer-note {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #b494cf;
+            margin-top: 1rem;
+        }
+        .error-msg {
+            background: #ffe5f0;
+            text-align: center;
+            padding: 0.8rem;
+            border-radius: 2rem;
+            color: #cf6f8b;
+            font-weight: 500;
+        }
+
+        /* 底部飘浮音符 */
+        .music-notes {
+            position: fixed;
+            bottom: 15px;
+            left: 0;
+            width: 100%;
+            pointer-events: none;
+            z-index: 10;
+            display: flex;
+            justify-content: space-around;
+            font-size: 1.4rem;
+            color: #e2b5ff;
+            opacity: 0.6;
+            animation: floatNotes 6s infinite ease-in-out;
+        }
+        @keyframes floatNotes {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0.3;}
+            50% { transform: translateY(-12px) rotate(5deg); opacity: 0.8;}
+            100% { transform: translateY(0px) rotate(0deg); opacity: 0.3;}
+        }
+        .note1 { animation-delay: 0s; margin-left: 5%;}
+        .note2 { animation-delay: 1.2s; margin-right: 10%;}
+        .note3 { animation-delay: 2.4s; margin-left: 20%;}
+        @media (max-width: 550px) {
+            .quiz-wrapper { padding: 1.2rem; }
+            .char-name { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="pick-deco"><i class="fas fa-guitar"></i><i class="fas fa-pick"></i></div>
+<div class="container">
+    <div class="hero">
+        <h1><i class="fas fa-star"></i> 邦邦性格测试 <i class="fas fa-music"></i></h1>
+        <div class="sub">✨ Poppin'Party 明快感 ✨ 寻找你的乐队灵魂</div>
+    </div>
+
+    <div class="quiz-wrapper" id="quizPanel">
+        <div id="questionsArea"></div>
+        <button class="btn-submit" id="submitBtn"><i class="fas fa-gem"></i> 奏响 · 揭晓我的邦邦分身</button>
+    </div>
+    <div id="resultArea" style="display: none;"></div>
+    <div class="footer-note">
+        <i class="fas fa-heart"></i> 基于性格维度+MBTI共鸣算法 · 内含Poppin'Party / Roselia / Afterglow / MyGO!!!!! / HHW等
+    </div>
+</div>
+<div class="music-notes">
+    <i class="fas fa-music note1"></i>
+    <i class="fas fa-headphones note2"></i>
+    <i class="fas fa-drumstick-bite note3"></i>
+</div>
+
+<script>
+    // --------------------------------------------------------------
+    // 基于邦邦角色深度性格库 (含mbti以及详细介绍，共20位角色)
+    // 角色包含 户山香澄、市谷有咲、花园多惠、山吹沙绫、牛込里美、
+    // 凑友希那、冰川纱夜、今井莉莎、美竹兰、青叶摩卡、丸山彩、冰川日菜、
+    // 弦卷心、奥泽美咲、高松灯、千早爱音、三角初华、若宫伊芙、白鹭千圣、松原花音
+    // --------------------------------------------------------------
+    const characters = [
+        { name: "户山香澄", band: "Poppin'Party", mbti: "ENFP", desc: "⭐ 寻找kirakira dokidoki的星星女孩！永远乐观积极，行动力爆表，能用热情把周围人全部卷进来。虽然偶尔冒失，但那份光芒总能照亮大家的路。", dim: { E: 8, I: 0, S: 2, N: 8, T: 2, F: 8, J: 3, P: 7 } },
+        { name: "市谷有咲", band: "Poppin'Party", mbti: "INTP", desc: "🎍 毒舌盆栽少女，吐槽圣体！表面怕麻烦但其实最关心伙伴，逻辑清晰，是PPP里冷静又可靠的大脑。傲娇起来特别可爱。", dim: { E: 2, I: 8, S: 3, N: 7, T: 7, F: 3, J: 4, P: 6 } },
+        { name: "花园多惠", band: "Poppin'Party", mbti: "ISFP", desc: "🐇 电波系吉他天才！我行我素，对音乐无比热爱，家里养着20只兔子。平时安静但内心藏着激烈的情感，温柔又执着。", dim: { E: 3, I: 7, S: 6, N: 4, T: 3, F: 7, J: 3, P: 7 } },
+        { name: "山吹沙绫", band: "Poppin'Party", mbti: "ESFJ", desc: "🍞 大家的可靠姐姐！一边照顾家里面包店一边打鼓，温柔体贴，是香澄的精神支柱。责任感超强，总在默默守护队友。", dim: { E: 7, I: 3, S: 6, N: 4, T: 3, F: 8, J: 7, P: 3 } },
+        { name: "牛込里美", band: "Poppin'Party", mbti: "ISFJ", desc: "🍫 软萌巧克力控，虽然胆小但渴望改变，为伙伴努力突破自己。细腻善良，是队里的治愈担当。", dim: { E: 2, I: 8, S: 7, N: 3, T: 3, F: 7, J: 6, P: 4 } },
+        { name: "凑友希那", band: "Roselia", mbti: "INTJ", desc: "🐱 孤高的歌姬，追求音乐极致的王者。外冷内热，对信念绝对忠诚，私底下其实是个猫奴+天然呆。", dim: { E: 2, I: 8, S: 4, N: 8, T: 8, F: 2, J: 8, P: 2 } },
+        { name: "冰川纱夜", band: "Roselia", mbti: "ISTJ", desc: "🎸 认真到顽固的优等生，对自己极其严格。逐渐学会享受音乐与和解，努力家的典范，内心其实柔软。", dim: { E: 3, I: 7, S: 8, N: 2, T: 7, F: 3, J: 8, P: 2 } },
+        { name: "今井莉莎", band: "Roselia", mbti: "ESFJ", desc: "💄 Roselia的温柔妈妈！社交能力强，照顾所有人，外表辣妹内心少女，是团队粘合剂，情商极高。", dim: { E: 8, I: 2, S: 5, N: 5, T: 3, F: 8, J: 6, P: 4 } },
+        { name: "美竹兰", band: "Afterglow", mbti: "INFP", desc: "🌸 外冷内热的别扭队长，花道世家却热爱摇滚，害怕孤独但嘴硬，重情重义，内心非常细腻。", dim: { E: 3, I: 7, S: 3, N: 7, T: 3, F: 8, J: 4, P: 6 } },
+        { name: "青叶摩卡", band: "Afterglow", mbti: "INTP", desc: "🍞 慵懒面包少女，看起来漫不经心其实比谁都懂同伴，天才般的观察力，说话方式独特。", dim: { E: 2, I: 8, S: 4, N: 8, T: 7, F: 3, J: 2, P: 8 } },
+        { name: "丸山彩", band: "Pastel*Palettes", mbti: "ISFP", desc: "💖 泪腺脆弱的努力家偶像！虽然经常哭鼻子但比任何人都拼命，渴望被认可，真诚又可爱。", dim: { E: 5, I: 5, S: 6, N: 4, T: 3, F: 8, J: 5, P: 5 } },
+        { name: "冰川日菜", band: "Pastel*Palettes", mbti: "ENTP", desc: "🧠 天才少女！过目不忘，说话直率，常常无意识地打击人，但对姐姐纱夜有着超乎寻常的执着和爱。", dim: { E: 8, I: 2, S: 3, N: 7, T: 7, F: 3, J: 3, P: 7 } },
+        { name: "弦卷心", band: "Hello, Happy World!", mbti: "ENFP", desc: "😄 带来笑容的奇迹少女！家里超有钱但天真浪漫，用绝对乐观粉碎一切阴霾，直觉敏锐。", dim: { E: 9, I: 1, S: 2, N: 8, T: 2, F: 8, J: 1, P: 9 } },
+        { name: "奥泽美咲", band: "Hello, Happy World!", mbti: "INTP", desc: "🐻 米歇尔中之人，吐槽担当，表面冷静无奈实则最靠谱的常识人。逻辑控，默默守护hhw的平衡。", dim: { E: 2, I: 8, S: 4, N: 7, T: 8, F: 2, J: 5, P: 5 } },
+        { name: "高松灯", band: "MyGO!!!!!", mbti: "INFP", desc: "🌌 内心宇宙般细腻的主唱，不善言辞但情感汹涌，用歌声表达真正的自己，温柔又坚定。", dim: { E: 1, I: 9, S: 3, N: 8, T: 2, F: 9, J: 3, P: 7 } },
+        { name: "千早爱音", band: "MyGO!!!!!", mbti: "ESFJ", desc: "✨ 社交达人，看起来爱慕虚荣其实渴望真正的归属，行动力强，非常在乎别人的感受。", dim: { E: 9, I: 1, S: 5, N: 5, T: 3, F: 8, J: 6, P: 4 } },
+        { name: "三角初华", band: "Ave Mujica", mbti: "INFJ", desc: "🌟 双重身份的神秘巨星，亲和与深邃并存，对音乐执着，洞察人心但隐藏真实自我。", dim: { E: 5, I: 5, S: 3, N: 8, T: 4, F: 7, J: 6, P: 4 } },
+        { name: "若宫伊芙", band: "Pastel*Palettes", mbti: "ENFJ", desc: "⚔️ 日芬混血的武士道女孩！正直温柔，充满正义感，乐于助人，团队里的小太阳。", dim: { E: 7, I: 3, S: 5, N: 5, T: 3, F: 8, J: 7, P: 3 } },
+        { name: "白鹭千圣", band: "Pastel*Palettes", mbti: "ENTJ", desc: "🎭 童星出身的实力派，外表腹黑冷静实则重情重义，目标明确，为了团队可以发挥超强领导力。", dim: { E: 7, I: 3, S: 3, N: 7, T: 8, F: 2, J: 8, P: 2 } },
+        { name: "松原花音", band: "Hello, Happy World!", mbti: "INFP", desc: "🌼 社恐但温柔的水母少女，容易慌张却非常为他人着想，在hhw逐渐变得勇敢。", dim: { E: 2, I: 8, S: 4, N: 6, T: 2, F: 8, J: 4, P: 6 } }
+    ];
+
+    // ---------- 18道性格测试题 (基于MBTI + 邦邦情景) ----------
+    const questions = [
+        { text: "周末临时被拉去livehouse帮忙，你会？", options: [
+            { text: "超兴奋！马上答应并带动全场气氛", val: { E:2, I:-1, S:-1, N:1, T:-1, F:2 } },
+            { text: "有点紧张但会去，默默帮忙布置", val: { E:-1, I:1, S:1, N:-1, T:0, F:1 } },
+            { text: "先确认流程表，做好万全准备再去", val: { E:0, I:0, S:2, N:-1, T:2, F:-1 } },
+            { text: "心里想去但会纠结，最后可能找借口", val: { E:-2, I:2, S:0, N:-1, T:0, F:-1 } }
+        ] },
+        { text: "队友因为小失误沮丧，你会？", options: [
+            { text: "“没关系！一起大笑然后重来！”", val: { E:1, I:-1, S:0, N:1, T:-1, F:2 } },
+            { text: "安静坐在旁边陪伴，等ta想说再说", val: { E:-1, I:1, S:0, N:0, T:0, F:2 } },
+            { text: "理性分析错误原因，帮忙改进", val: { E:0, I:0, S:2, N:-1, T:2, F:-1 } },
+            { text: "带ta去吃甜点转换心情", val: { E:1, I:-1, S:1, N:0, T:-1, F:2 } }
+        ] },
+        { text: "在团队中你更像哪种角色？", options: [
+            { text: "气氛制造者，带头冲锋", val: { E:2, I:-1, S:-1, N:1, T:-1, F:1 } },
+            { text: "默默做事的人，关键时刻站出来", val: { E:-1, I:2, S:1, N:-1, T:1, F:0 } },
+            { text: "计划与规则制定者", val: { E:0, I:0, S:2, N:-1, T:2, F:-1 } },
+            { text: "调和气氛，照顾每个人感受", val: { E:1, I:-1, S:0, N:0, T:-1, F:2 } }
+        ] },
+        { text: "被人说‘你看起来好认真严肃’会怎么想？", options: [
+            { text: "“我明明超随和！”立刻反驳", val: { E:1, I:-1, S:0, N:1, T:-1, F:1 } },
+            { text: "会在意，悄悄解释自己不是那样", val: { E:-1, I:1, S:0, N:0, T:0, F:1 } },
+            { text: "无所谓，不影响做事就行", val: { E:-1, I:1, S:1, N:-1, T:2, F:-1 } },
+            { text: "觉得挺好的，说明靠谱", val: { E:0, I:0, S:2, N:-1, T:1, F:0 } }
+        ] },
+        { text: "选择努力的方式？", options: [
+            { text: "凭热情一口气往前冲", val: { E:2, I:-1, S:-1, N:1, T:-1, F:1 } },
+            { text: "设定遥远目标，一步步死磕", val: { E:-1, I:1, S:2, N:-1, T:2, F:-1 } },
+            { text: "随缘努力，但关键时爆发", val: { E:0, I:0, S:-1, N:1, T:-1, F:0 } },
+            { text: "为伙伴而努力，不想辜负他人", val: { E:1, I:-1, S:0, N:0, T:-1, F:2 } }
+        ] },
+        { text: "用动物形容自己？", options: [
+            { text: "猫——自由随性", val: { E:-1, I:1, S:0, N:1, T:0, F:0 } },
+            { text: "狗——热情忠诚", val: { E:2, I:-1, S:0, N:0, T:-1, F:2 } },
+            { text: "狼——独立有原则", val: { E:-1, I:1, S:1, N:0, T:2, F:-1 } },
+            { text: "兔子——敏感但跑得快", val: { E:-1, I:1, S:0, N:0, T:-1, F:2 } }
+        ] },
+        { text: "崇拜的人看起来很严肃，你会？", options: [
+            { text: "直接搭话，主动交友", val: { E:2, I:-2, S:0, N:1, T:-1, F:1 } },
+            { text: "默默努力，等对方注意到", val: { E:-1, I:2, S:1, N:-1, T:0, F:1 } },
+            { text: "用实力赢得认可，不服输", val: { E:0, I:0, S:1, N:-1, T:2, F:-1 } },
+            { text: "先接近ta身边的人", val: { E:1, I:-1, S:1, N:0, T:0, F:1 } }
+        ] },
+        { text: "容易被什么治愈？", options: [
+            { text: "大家一起傻笑的瞬间", val: { E:2, I:-2, S:0, N:1, T:-1, F:2 } },
+            { text: "被人认真倾听理解", val: { E:-1, I:1, S:0, N:1, T:-1, F:2 } },
+            { text: "完成很难的事获得肯定", val: { E:0, I:0, S:2, N:-1, T:2, F:-1 } },
+            { text: "看到别人因我而开心", val: { E:1, I:-1, S:1, N:0, T:-1, F:2 } }
+        ] },
+        { text: "喜欢的剧情类型？", options: [
+            { text: "命运般的伙伴相遇", val: { E:1, I:-1, S:-1, N:2, T:-1, F:2 } },
+            { text: "挫折后重新站起来变强", val: { E:0, I:0, S:1, N:0, T:1, F:0 } },
+            { text: "表面轻松背后藏着努力", val: { E:0, I:0, S:0, N:1, T:0, F:1 } },
+            { text: "细腻的情感变化，打开心扉", val: { E:-1, I:1, S:-1, N:2, T:-1, F:2 } }
+        ] },
+        { text: "喜欢的颜色？", options: [
+            { text: "红色/粉色——热情可爱", val: { E:2, I:-1, S:0, N:0, T:-1, F:1 } },
+            { text: "蓝色/紫色——冷静神秘", val: { E:-1, I:1, S:1, N:0, T:1, F:0 } },
+            { text: "黄色/橙色——元气活力", val: { E:2, I:-1, S:0, N:1, T:-1, F:1 } },
+            { text: "白色/淡绿——温柔安静", val: { E:-1, I:2, S:0, N:1, T:-1, F:1 } }
+        ] },
+        { text: "和人有矛盾时通常？", options: [
+            { text: "吵完很快和好", val: { E:2, I:-2, S:0, N:0, T:-1, F:1 } },
+            { text: "冷战等对方先给台阶", val: { E:-2, I:2, S:1, N:-1, T:0, F:-1 } },
+            { text: "理性沟通解决问题", val: { E:0, I:0, S:1, N:0, T:2, F:-1 } },
+            { text: "表面不说，内心保持距离", val: { E:-1, I:2, S:0, N:-1, T:1, F:-1 } }
+        ] },
+        { text: "乐队中想负责的位置？", options: [
+            { text: "主唱/吉他——表达情绪", val: { E:2, I:-1, S:-1, N:1, T:-1, F:2 } },
+            { text: "鼓手——掌控节奏支撑队伍", val: { E:0, I:0, S:1, N:-1, T:1, F:0 } },
+            { text: "贝斯——低调但不可或缺", val: { E:-1, I:1, S:1, N:0, T:1, F:0 } },
+            { text: "键盘/编曲——丰富细节", val: { E:0, I:0, S:0, N:1, T:1, F:0 } }
+        ] },
+        { text: "遇到从未尝试的新挑战？", options: [
+            { text: "跃跃欲试！好玩就行", val: { E:2, I:-1, S:-1, N:2, T:-1, F:1 } },
+            { text: "先观察别人怎么做", val: { E:-1, I:1, S:2, N:-1, T:0, F:0 } },
+            { text: "制定完美计划再行动", val: { E:0, I:0, S:2, N:-1, T:2, F:-1 } },
+            { text: "有点害怕但有人陪就敢", val: { E:-1, I:1, S:0, N:0, T:-1, F:1 } }
+        ] },
+        { text: "别人眼中的你？", options: [
+            { text: "开朗小太阳", val: { E:2, I:-2, S:0, N:0, T:-1, F:2 } },
+            { text: "冷静吐槽役", val: { E:-1, I:1, S:1, N:0, T:2, F:-1 } },
+            { text: "神秘电波系", val: { E:-1, I:2, S:-1, N:2, T:0, F:0 } },
+            { text: "温柔好脾气", val: { E:0, I:0, S:0, N:0, T:-1, F:2 } }
+        ] },
+        { text: "喜欢哪种舞台风格？", options: [
+            { text: "kirakira闪闪发光偶像风", val: { E:2, I:-2, S:0, N:1, T:-1, F:2 } },
+            { text: "酷炫摇滚暗黑系", val: { E:0, I:0, S:1, N:0, T:1, F:-1 } },
+            { text: "轻松有趣大家一起玩", val: { E:2, I:-1, S:0, N:0, T:-1, F:1 } },
+            { text: "情感细腻打动人心", val: { E:-1, I:1, S:-1, N:2, T:-1, F:2 } }
+        ] },
+        { text: "重要朋友难过时，你会？", options: [
+            { text: "直接带ta去吃好吃的散心", val: { E:1, I:-1, S:1, N:0, T:-1, F:2 } },
+            { text: "默默听ta倾诉不打断", val: { E:-1, I:1, S:0, N:0, T:-1, F:2 } },
+            { text: "给实际建议帮ta解决问题", val: { E:0, I:0, S:2, N:-1, T:2, F:-1 } },
+            { text: "用笑话逗ta开心", val: { E:2, I:-1, S:-1, N:1, T:-1, F:1 } }
+        ] },
+        { text: "你觉得自己内心更像？", options: [
+            { text: "永远燃烧的火焰", val: { E:2, I:-2, S:-1, N:1, T:-1, F:2 } },
+            { text: "深邃静谧的湖水", val: { E:-2, I:2, S:0, N:1, T:0, F:1 } },
+            { text: "随风飘动的云", val: { E:0, I:0, S:-1, N:2, T:-1, F:1 } },
+            { text: "稳重扎根的大树", val: { E:-1, I:1, S:2, N:-1, T:1, F:0 } }
+        ] },
+        { text: "追求什么样的乐队？", options: [
+            { text: "一起登上武道馆！", val: { E:2, I:-1, S:0, N:1, T:1, F:1 } },
+            { text: "能永远在一起玩音乐", val: { E:1, I:0, S:1, N:0, T:-1, F:2 } },
+            { text: "技术和实力至上", val: { E:-1, I:0, S:2, N:-1, T:2, F:-1 } },
+            { text: "用音乐传递心声", val: { E:0, I:1, S:-1, N:2, T:-1, F:2 } }
+        ] }
+    ];
+
+    // 渲染题目 (18题)
+    function renderQuestions() {
+        const container = document.getElementById("questionsArea");
+        let html = '';
+        questions.forEach((q, idx) => {
+            html += `<div class="question-card" data-qidx="${idx}">
+                        <div class="q-title"><span class="q-num">${idx+1}</span> ${q.text}</div>
+                        <div class="options" id="q-${idx}">`;
+            q.options.forEach((opt, optIdx) => {
+                const letter = String.fromCharCode(65+optIdx);
+                html += `<label class="opt-label">
+                            <input type="radio" name="q${idx}" value="${optIdx}" data-val='${JSON.stringify(opt.val)}'>
+                            <span class="opt-text">${letter}. ${opt.text}</span>
+                         </label>`;
+            });
+            html += `</div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    // 收集维度（MBTI四维度倾向）
+    function collectUserDims() {
+        let userVec = { E:0, I:0, S:0, N:0, T:0, F:0, J:0, P:0 };
+        let answered = true;
+        for(let i=0;i<questions.length;i++) {
+            const selected = document.querySelector(`input[name="q${i}"]:checked`);
+            if(!selected) { answered = false; continue; }
+            const delta = JSON.parse(selected.getAttribute('data-val'));
+            for(let k in delta) { if(userVec[k] !== undefined) userVec[k] += delta[k]; }
+        }
+        // 计算MBTI字母: E/I, S/N, T/F, J/P
+        const mbti = (userVec.E >= userVec.I ? "E" : "I") + 
+                     (userVec.N >= userVec.S ? "N" : "S") +
+                     (userVec.F >= userVec.T ? "F" : "T") +
+                     (userVec.P >= userVec.J ? "P" : "J");
+        return { userVec, mbti, answered };
+    }
+
+    // 匹配最佳角色 (余弦相似+MBTI倾向权重)
+    function findBestMatch(userVec, mbtiStr) {
+        let best = null, bestSim = -Infinity;
+        for(let ch of characters) {
+            let chVec = ch.dim;
+            let dot = 0, normU=0, normC=0;
+            const keys = ['E','I','S','N','T','F','J','P'];
+            for(let k of keys) {
+                let uVal = (k==='E'?userVec.E: (k==='I'?userVec.I : (k==='S'?userVec.S: (k==='N'?userVec.N: (k==='T'?userVec.T: (k==='F'?userVec.F: (k==='J'?userVec.J: userVec.P)))))));
+                let cVal = chVec[k];
+                dot += uVal * cVal;
+                normU += uVal*uVal;
+                normC += cVal*cVal;
+            }
+            let sim = dot / (Math.sqrt(normU)*Math.sqrt(normC) + 1e-6);
+            // MBTI字母加成: 相同字母越多越加分
+            let chMbti = ch.mbti;
+            let matchBonus = 0;
+            for(let i=0;i<4;i++) if(mbtiStr[i]===chMbti[i]) matchBonus+=0.08;
+            sim += matchBonus;
+            if(sim > bestSim) { bestSim = sim; best = ch; }
+        }
+        let percent = Math.min(99, Math.floor((bestSim+0.5)*70 + 20));
+        return { character: best, similarity: percent };
+    }
+
+    function starRating(percent) {
+        let filled = Math.round(percent / 10);
+        let stars = '';
+        for(let i=0;i<10;i++) stars += `<i class="fas fa-star ${i<filled ? 'star-filled' : 'star-empty'}"></i>`;
+        return `<div class="star-rating">${stars}</div><div style="text-align:center; font-size:0.7rem;">共鸣度 ${percent}%</div>`;
+    }
+
+    function showResult() {
+        const { userVec, mbti, answered } = collectUserDims();
+        if(!answered) {
+            const resultDiv = document.getElementById("resultArea");
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `<div class="result-container"><div class="error-msg"><i class="fas fa-exclamation-circle"></i> 还有题目没答完哦~ 全部星星填满才能召唤邦邦分身！</div><button class="reset-btn" id="closeErrorBtn">继续演奏</button></div>`;
+            document.getElementById("closeErrorBtn")?.addEventListener("click",()=>{ resultDiv.style.display="none"; });
+            return;
+        }
+        const { character, similarity } = findBestMatch(userVec, mbti);
+        const starHtml = starRating(similarity);
+        const resultHtml = `
+            <div class="result-container">
+                <div class="char-name">⭐ ${character.name} ⭐</div>
+                <div class="band-name">🎸 ${character.band}  ·  ${character.mbti}</div>
+                ${starHtml}
+                <div class="personality-desc">
+                    <i class="fas fa-quote-left" style="margin-right:6px; opacity:0.7;"></i> ${character.desc}<br/>
+                    <span class="mbti-badge"><i class="fas fa-chart-line"></i> 性格特质：${character.mbti} · 内在频率与你共振</span>
+                </div>
+                <button class="reset-btn" id="retakeBtn"><i class="fas fa-redo-alt"></i> 再次测试</button>
+            </div>
+        `;
+        const resultArea = document.getElementById("resultArea");
+        resultArea.style.display = "block";
+        resultArea.innerHTML = resultHtml;
+        document.getElementById("retakeBtn")?.addEventListener("click",()=>{
+            document.querySelectorAll('input[type="radio"]').forEach(r=>r.checked=false);
+            resultArea.style.display="none";
+            window.scrollTo({top: document.getElementById("quizPanel").offsetTop-20, behavior:'smooth'});
+        });
+        resultArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    renderQuestions();
+    document.getElementById("submitBtn").addEventListener("click", showResult);
+</script>
+</body>
+</html>
